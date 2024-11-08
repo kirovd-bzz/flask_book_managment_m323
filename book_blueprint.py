@@ -20,6 +20,14 @@ def get_all_books():
     return jsonify([book.to_dict() for book in books]), 200
 
 
+@book_blueprint.route("/books/available", methods=["GET"])
+def get_available_books():
+    books = book_dao.get_all_books()
+    available_books = list(filter(lambda book: book.status.lower() == "available", books))
+
+    return jsonify([book.to_dict() for book in available_books]), 200
+
+
 @book_blueprint.route("/books/<int:book_id>", methods=["GET"])
 def get_book(book_id):
     book = book_dao.get_book(book_id)
